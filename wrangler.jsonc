@@ -1,0 +1,55 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "enhanced-memory-mcp-server",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-03-10",
+	"compatibility_flags": ["nodejs_compat"],
+	
+	// Memory system migrations
+	"migrations": [
+		{
+			"new_sqlite_classes": ["MyMCP"],
+			"tag": "v1"
+		}
+	],
+	
+	// Durable Objects for persistent memory storage
+	"durable_objects": {
+		"bindings": [
+			{
+				"class_name": "MyMCP",
+				"name": "MCP_OBJECT"
+			}
+		]
+	},
+	
+	// Vector search for semantic memory
+	"vectorize": [
+		{
+			"binding": "VECTORIZE",
+			"index_name": "ai-memory-index"
+		}
+	],
+	
+	// AI embeddings
+	"ai": {
+		"binding": "AI"
+	},
+	
+	// OAuth state storage
+	"kv_namespaces": [
+		{
+			"binding": "OAUTH_KV",
+			"id": "YOUR_KV_NAMESPACE_ID_HERE"
+		}
+	],
+	
+	"observability": {
+		"enabled": true
+	},
+	"assets": { "directory": "./static/", "binding": "ASSETS" }
+}
